@@ -27,3 +27,18 @@ page =pages[0]
 print(page.page_content[:500])
 
 print(len(pages))
+
+
+# Load from a website page.
+from langchain_community.document_loaders import WebBaseLoader
+
+# Pass the session to WebBaseLoader
+website_loader = WebBaseLoader(
+    "https://sports.mascoknit.com/details.php?match_id=127"
+)
+
+# Now use the session to load the data
+web_data = website_loader.load()
+
+print(web_data[:500])
+
