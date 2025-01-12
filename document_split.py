@@ -4,6 +4,8 @@ import openai
 openai.api_key  = os.environ['OPENAI_API_KEY']
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter, CharacterTextSplitter
+from langchain.document_loaders import PyPDFLoader
+from langchain.document_loaders import WebBaseLoader
 
 chunk_size =26
 chunk_overlap = 4
@@ -66,3 +68,33 @@ r_splitter = RecursiveCharacterTextSplitter(
     separators=["\n\n", "\n", " ", ""]
 )
 print(r_splitter.split_text(some_text))
+
+
+pfdloder = PyPDFLoader("E:\OneDrive - Masco Group\Shipon\Github\LangChain-Chatbot\CV_MD_MERAJUL_RAHMAN_CSE_RUET.pdf")
+
+pages = pfdloder.load()
+
+print(pages[0].page_content[:100])
+
+from langchain.text_splitter import CharacterTextSplitter
+text_splitter = CharacterTextSplitter(
+    separator="\n",
+    chunk_size=1000,
+    chunk_overlap=150,
+    length_function=len
+)
+
+docs = text_splitter.split_documents(pages)
+
+print(docs)
+print(len(docs))
+
+
+webloader = WebBaseLoader("https://sports.mascoknit.com/details.php?match_id=127")
+
+webpage = webloader.load()
+
+
+splited_data = r_splitter.split_documents(webpage)
+
+print(splited_data)
